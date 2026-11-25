@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amsyar 🤍 Izzati</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #FBF9F5;
+            --bg-soft: #F3EFE8;
+            --bg-card: rgba(255, 255, 255, 0.94);
+            --ink-primary: #272B28;
+            --ink-secondary: #5F6661;
+            --ink-muted: #8F9590;
+            --sage-main: #546E61;
+            --sage-soft: rgba(84, 110, 97, 0.12);
+            --terracotta: #B68567;
+            --border-light: rgba(39, 43, 40, 0.09);
+            --border-sage: rgba(84, 110, 97, 0.26);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--ink-primary);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 300;
+            line-height: 1.75;
+            min-height: 100vh;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* FIXED CROSSFADING BACKGROUND LAYERS */
+        .bg-stage {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .bg-layer {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            transition: opacity 1.1s cubic-bezier(0.22, 1, 0.36, 1),
+                        transform 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        /* Layer 1: Top / Initial Bright Aesthetic Background */
+        .bg-layer-1 {
+            background-image: linear-gradient(to bottom, rgba(251, 249, 245, 0.72) 0%, rgba(251, 249, 245, 0.88) 70%, rgba(251, 249, 245, 0.96) 100%),
+                              url('https://images.unsplash.com/photo-1507504031003-b417219a0fde?auto=format&fit=crop&w=1500&q=85');
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Layer 2: Secondary Background when scrolling into Tentative */
+        .bg-layer-2 {
+            background-image: linear-gradient(to bottom, rgba(251, 249, 245, 0.82) 0%, rgba(251, 249, 245, 0.9) 60%, rgba(251, 249, 245, 0.96) 100%),
+                              url('https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&w=1500&q=85');
+            opacity: 0;
+            transform: scale(1.04);
+        }
+
+        body.bg-shifted .bg-layer-1 {
+            opacity: 0;
+            transform: scale(1.03);
+        }
+
+        body.bg-shifted .bg-layer-2 {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .container {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 60px 24px 124px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Scroll Reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+                        transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .reveal.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 1. HERO CARD */
+        .hero {
+            text-align: center;
+            padding: 68px 32px;
+            background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.82) 0%, rgba(255, 255, 255, 0.9) 100%),
+                              url('https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=1200&q=85');
+            background-size: cover;
+            background-position: center;
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            border-radius: 28px;
+            box-shadow: 0 22px 52px rgba(39, 43, 40, 0.08);
+            margin-bottom: 72px;
+            position: relative;
+            backdrop-filter: blur(6px);
+        }
+
+        .pill-eyebrow {
+            display: inline-block;
+            padding: 6px 18px;
+            border-radius: 999px;
+            background-color: rgba(255, 255, 255, 0.88);
+            border: 1px solid var(--border-sage);
+            color: var(--sage-main);
+            font-size: 0.68rem;
+            letter-spacing: 0.24em;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 22px;
+        }
+
+        .hero h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 600;
+            font-size: clamp(2.5rem, 6vw, 3.7rem);
+            line-height: 1.12;
+            margin-bottom: 20px;
+            color: var(--ink-primary);
+        }
+
+        .hero h1 em {
+            font-style: italic;
+            color: var(--sage-main);
+        }
+
+        .love-note {
+            font-size: 0.96rem;
+            font-weight: 400;
+            color: var(--ink-secondary);
+            max-width: 495px;
+            margin: 0 auto 36px;
+        }
+
+        .btn-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .btn-yes {
+            background-color: var(--sage-main);
+            color: #FFFFFF;
+            border: none;
+            padding: 13px 32px;
+            border-radius: 999px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.88rem;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+            cursor: pointer;
+            box-shadow: 0 10px 24px rgba(84, 110, 97, 0.24);
+            transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+        }
+
+        .btn-yes:hover {
+            transform: translateY(-2px);
+            background-color: #465E52;
+            box-shadow: 0 14px 30px rgba(84, 110, 97, 0.3);
+        }
+
+        .btn-no {
+            background-color: rgba(255, 255, 255, 0.9);
+            color: var(--ink-secondary);
+            border: 1px solid var(--border-light);
+            padding: 12px 26px;
+            border-radius: 999px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: border-color 0.2s ease, color 0.2s ease;
+        }
+
+        .btn-no:hover {
+            border-color: var(--sage-main);
+            color: var(--ink-primary);
+        }
+
+        .rsvp-banner {
+            display: none;
+            margin: 28px auto 0;
+            padding: 12px 32px;
+            width: fit-content;
+            border-radius: 999px;
+            background-color: #FFFFFF;
+            border: 1px solid var(--border-sage);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: 0.28em;
+            color: var(--sage-main);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
+            animation: fadeIn 0.45s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* SECTION HEADERS */
+        section {
+            margin-bottom: 72px;
+        }
+
+        .sec-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+
+        .sec-header::after {
+            content: "";
+            height: 1px;
+            flex: 1;
+            background: var(--border-light);
+        }
+
+        .sec-num {
+            font-size: 0.72rem;
+            letter-spacing: 0.2em;
+            color: var(--terracotta);
+            font-weight: 600;
+        }
+
+        .sec-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.95rem;
+            font-weight: 500;
+            color: var(--ink-primary);
+        }
+
+        /* 2. PLACES TO GO (3 Stops - Title Only) */
+        .places-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .place-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 22px;
+            overflow: hidden;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 12px 32px rgba(39, 43, 40, 0.045);
+            transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+        }
+
+        .place-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 42px rgba(39, 43, 40, 0.09);
+            border-color: var(--border-sage);
+        }
+
+        .place-img-wrap {
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            overflow: hidden;
+            position: relative;
+            background-color: var(--bg-soft);
+        }
+
+        .place-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.6s ease;
+        }
+
+        .place-card:hover .place-img-wrap img {
+            transform: scale(1.05);
+        }
+
+        .place-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            padding: 4px 12px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(6px);
+            font-size: 0.62rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: var(--sage-main);
+        }
+
+        .place-body {
+            padding: 18px 18px 20px;
+            text-align: center;
+        }
+
+        .place-body h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.42rem;
+            font-weight: 600;
+            line-height: 1.25;
+            color: var(--ink-primary);
+        }
+
+        /* 3. THINGS SHE NEEDS TO PROVIDE */
+        .contributions-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .contribution-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 18px 24px;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 6px 20px rgba(39, 43, 40, 0.03);
+            transition: border-color 0.25s ease, transform 0.25s ease;
+        }
+
+        .contribution-item:hover {
+            border-color: var(--border-sage);
+            transform: translateX(4px);
+        }
+
+        .item-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .item-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: var(--terracotta);
+            flex-shrink: 0;
+        }
+
+        .item-name {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--ink-primary);
+        }
+
+        .item-reason {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 1.1rem;
+            color: var(--ink-secondary);
+            text-align: right;
+        }
+
+        /* 4. DRESS CODE (TOP & BOTTOM) */
+        .dresscode-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 22px;
+            padding: 28px;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 12px 32px rgba(39, 43, 40, 0.04);
+        }
+
+        .dresscode-note {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 1.15rem;
+            color: var(--ink-secondary);
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .dresscode-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .swatch-box {
+            padding: 22px;
+            border-radius: 18px;
+            background-color: var(--bg-main);
+            border: 1px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            transition: transform 0.25s ease, border-color 0.25s ease;
+        }
+
+        .swatch-box:hover {
+            transform: translateY(-3px);
+            border-color: var(--border-sage);
+        }
+
+        .color-circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            position: relative;
+            box-shadow: 0 8px 18px rgba(39, 43, 40, 0.12);
+        }
+
+        .color-circle::after {
+            content: "";
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            border: 1px dashed var(--border-sage);
+        }
+
+        .swatch-top {
+            background: linear-gradient(135deg, #FFFDF9 0%, #EFE6D8 100%);
+            border: 1px solid rgba(39, 43, 40, 0.12);
+        }
+
+        .swatch-bottom {
+            background: linear-gradient(135deg, #6B8577 0%, #486054 100%);
+        }
+
+        .swatch-meta {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.35;
+        }
+
+        .swatch-part {
+            font-size: 0.66rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: var(--terracotta);
+            margin-bottom: 3px;
+        }
+
+        .swatch-color-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.35rem;
+            font-weight: 600;
+            color: var(--ink-primary);
+        }
+
+        .swatch-vibe {
+            font-size: 0.82rem;
+            color: var(--ink-secondary);
+            margin-top: 2px;
+        }
+
+        /* 5. TENTATIVE (Time & Title Only, Uniform Image Ratio) */
+        .timeline-box {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 22px;
+            padding: 32px 28px;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 12px 32px rgba(39, 43, 40, 0.04);
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 28px;
+            border-left: 1.5px solid var(--border-sage);
+            margin-left: 6px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .time-node {
+            position: relative;
+            background-color: var(--bg-main);
+            border: 1px solid var(--border-light);
+            border-radius: 18px;
+            padding: 12px;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .time-node:hover {
+            transform: translateY(-3px);
+            border-color: var(--border-sage);
+        }
+
+        .time-node::before {
+            content: "";
+            position: absolute;
+            left: -34px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--sage-main);
+            box-shadow: 0 0 0 4px var(--sage-soft);
+        }
+
+        .time-card-layout {
+            display: grid;
+            grid-template-columns: 168px 1fr;
+            gap: 18px;
+            align-items: center;
+        }
+
+        .time-img-wrap {
+            width: 168px;
+            aspect-ratio: 4 / 3;
+            border-radius: 12px;
+            overflow: hidden;
+            background-color: var(--bg-soft);
+            flex-shrink: 0;
+        }
+
+        .time-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.55s ease;
+        }
+
+        .time-node:hover .time-img-wrap img {
+            transform: scale(1.06);
+        }
+
+        .time-content {
+            padding-right: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .time-stamp {
+            font-size: 0.72rem;
+            letter-spacing: 0.16em;
+            color: var(--terracotta);
+            font-weight: 600;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .time-content h4 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.42rem;
+            font-weight: 600;
+            color: var(--ink-primary);
+            line-height: 1.28;
+        }
+
+        /* 6. STATIC RATIO PHOTO SLOTS FOR MEMORY */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .photo-frame {
+            width: 100%;
+            aspect-ratio: 3 / 4;
+            border-radius: 18px;
+            border: 1.5px dashed var(--border-sage);
+            background-color: var(--bg-card);
+            backdrop-filter: blur(8px);
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .photo-frame:hover {
+            transform: translateY(-4px);
+            border-color: var(--sage-main);
+        }
+
+        .photo-frame img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+        }
+
+        footer {
+            text-align: center;
+            padding-top: 28px;
+            border-top: 1px solid var(--border-light);
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 1.2rem;
+            color: var(--ink-secondary);
+        }
+
+        /* FLOATING MUSIC WIDGET */
+        .music-dock {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            z-index: 80;
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 9px 15px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.94);
+            border: 1px solid var(--border-light);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 10px 28px rgba(39, 43, 40, 0.08);
+        }
+
+        .music-toggle {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: none;
+            background-color: var(--sage-main);
+            color: #FFFFFF;
+            font-size: 0.74rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: grid;
+            place-items: center;
+            flex-shrink: 0;
+        }
+
+        .music-meta {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+            max-width: 115px;
+        }
+
+        .music-label {
+            font-size: 0.6rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--ink-muted);
+        }
+
+        .music-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 0.94rem;
+            color: var(--ink-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        input[type="range"].volume-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 64px;
+            height: 3px;
+            background: var(--border-light);
+            border-radius: 999px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        input[type="range"].volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--sage-main);
+            cursor: pointer;
+        }
+
+        .sparkle {
+            position: fixed;
+            bottom: -20px;
+            color: var(--terracotta);
+            font-size: 16px;
+            pointer-events: none;
+            z-index: 99;
+            animation: floatUp 4.2s ease-in forwards;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) scale(0.85); opacity: 0.9; }
+            100% { transform: translateY(-105vh) scale(1.25); opacity: 0; }
+        }
+
+        @media (max-width: 640px) {
+            .container { padding: 40px 18px 108px; }
+            .hero { padding: 48px 20px; }
+            .places-grid, .dresscode-grid { grid-template-columns: 1fr; }
+            .contribution-item { flex-direction: column; align-items: flex-start; gap: 4px; }
+            .item-reason { padding-left: 18px; text-align: left; }
+            .timeline-box { padding: 22px 16px; }
+            .timeline { padding-left: 20px; }
+            .time-node::before { left: -26px; top: 24px; transform: none; }
+            .time-card-layout { grid-template-columns: 1fr; gap: 12px; }
+            .time-img-wrap { width: 100%; aspect-ratio: 16 / 9; }
+            .time-content { padding: 0 4px 4px; }
+            .gallery-grid { grid-template-columns: 1fr; }
+            .photo-frame { aspect-ratio: 4 / 3; }
+            .music-dock { left: 14px; right: 14px; bottom: 14px; justify-content: space-between; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Smooth Crossfade Background Images -->
+    <div class="bg-stage" aria-hidden="true">
+        <div class="bg-layer bg-layer-1"></div>
+        <div class="bg-layer bg-layer-2"></div>
+    </div>
+
+    <audio id="bgMusic" loop preload="metadata">
+        <source src="Olivia Rodrigo - drop dead (Lyric Video).mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="music-dock" aria-label="Background music player">
+        <button class="music-toggle" id="musicToggle" type="button" aria-label="Play or pause music">▶</button>
+        <div class="music-meta">
+            <span class="music-label" id="musicStatus">Paused</span>
+            <span class="music-title">Our Little Melody</span>
+        </div>
+        <span id="volumeIcon" style="font-size: 0.8rem;" aria-hidden="true">🔉</span>
+        <input type="range" id="volumeSlider" class="volume-slider" min="0" max="100" value="45" aria-label="Adjust volume">
+    </div>
+
+    <main class="container">
+        <!-- 1. INVITATION -->
+        <header class="hero">
+            <span class="pill-eyebrow">A Little Note For You</span>
+            <h1>Just you, me &amp; a <em>slow afternoon</em> together.</h1>
+            <p class="love-note">
+                Not much but dah lama kita tak offcial date kan? so would youuu!
+            </p>
+
+            <div class="btn-row">
+                <button class="btn-yes" id="yesBtn">Yes, I’d love to 🤍</button>
+                <button class="btn-no" id="noBtn">Let me think...</button>
+            </div>
+
+            <div class="rsvp-banner" id="rsvpBanner">14.12.26 / 21.12.26</div>
+        </header>
+
+        <!-- 2. PLACES TO GO (Title Only) -->
+        <section class="reveal">
+            <div class="sec-header">
+                <span class="sec-num">01</span>
+                <h2 class="sec-title">Where I’m Taking You</h2>
+            </div>
+
+            <div class="places-grid">
+                <article class="place-card">
+                    <div class="place-img-wrap">
+                        <span class="place-badge">First Stop</span>
+                        <img src="https://images.unsplash.com/photo-1549007994-cb92caebd54b?auto=format&fit=crop&w=800&q=80" alt="Chocolate Museum">
+                    </div>
+                    <div class="place-body">
+                        <h3>Chocolate Museum</h3>
+                    </div>
+                </article>
+
+                <article class="place-card">
+                    <div class="place-img-wrap">
+                        <span class="place-badge">Second Stop</span>
+                        <img src="IKEA DAMAN.avif" alt="IKEA Damansara">
+                    </div>
+                    <div class="place-body">
+                        <h3>IKEA Damansara</h3>
+                    </div>
+                </article>
+
+                <article class="place-card">
+                    <div class="place-img-wrap">
+                        <span class="place-badge">Third Stop</span>
+                        <img src="masjid damansara.jpg" alt="Masjid Damansara Perdana">
+                    </div>
+                    <div class="place-body">
+                        <h3>Masjid Damansara Perdana</h3>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- 3. THINGS SHE NEEDS TO PROVIDE -->
+        <section class="reveal">
+            <div class="sec-header">
+                <span class="sec-num">02</span>
+                <h2 class="sec-title">Your Little Contributions</h2>
+            </div>
+
+            <ul class="contributions-list">
+                <li class="contribution-item">
+                    <span class="item-left">
+                        <span class="item-dot" aria-hidden="true"></span>
+                        <span class="item-name">Your Car!!!</span>
+                    </span>
+                    <span class="item-reason">ifff takde transport macam manaa nak jalan ii</span>
+                </li>
+                <li class="contribution-item">
+                    <span class="item-left">
+                        <span class="item-dot" aria-hidden="true"></span>
+                        <span class="item-name">TnG Card</span>
+                    </span>
+                    <span class="item-reason">Umm parking & toll </span>
+                </li>
+                <li class="contribution-item">
+                    <span class="item-left">
+                        <span class="item-dot" aria-hidden="true"></span>
+                        <span class="item-name">Mineral Water</span>
+                    </span>
+                    <span class="item-reason">Maybe sandwich? gardenia? before kita eat dekat Ikea</span>
+                </li>
+            </ul>
+        </section>
+
+        <!-- 4. DRESS CODE -->
+        <section class="reveal">
+            <div class="sec-header">
+                <span class="sec-num">03</span>
+                <h2 class="sec-title">Dress Code</h2>
+            </div>
+
+            <div class="dresscode-card">
+                <p class="dresscode-note">Soft, effortless &amp; comfortable for our afternoon out together.</p>
+                <div class="dresscode-grid">
+                    <div class="swatch-box">
+                        <div class="color-circle swatch-top" aria-hidden="true"></div>
+                        <div class="swatch-meta">
+                            <span class="swatch-part">Top</span>
+                            <span class="swatch-color-name">Soft Cream / Ivory</span>
+                            <span class="swatch-vibe">Light, airy &amp; clean</span>
+                        </div>
+                    </div>
+
+                    <div class="swatch-box">
+                        <div class="color-circle swatch-bottom" aria-hidden="true"></div>
+                        <div class="swatch-meta">
+                            <span class="swatch-part">Bottom</span>
+                            <span class="swatch-color-name">Sage Olive</span>
+                            <span class="swatch-vibe">Relaxed trousers or skirt</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. TENTATIVE (Time & Title Only) -->
+        <section class="reveal" id="tentativeSection">
+            <div class="sec-header">
+                <span class="sec-num">04</span>
+                <h2 class="sec-title">How Our Day Unfolds</h2>
+            </div>
+
+            <div class="timeline-box">
+                <div class="timeline">
+                    <div class="time-node">
+                        <div class="time-card-layout">
+                            <div class="time-img-wrap">
+                                <img src="UiTM Puncak Perdana.jpg" alt="Depart from UiTM Puncak Perdana">
+                            </div>
+                            <div class="time-content">
+                                <span class="time-stamp">02:00 PM</span>
+                                <h4>Depart from UiTM Puncak Perdana</h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="time-node">
+                        <div class="time-card-layout">
+                            <div class="time-img-wrap">
+                                <img src="42636032_1871391672980309_7430926568978907136_n-1-768x450.jpg" alt="Chocolate Museum">
+                            </div>
+                            <div class="time-content">
+                                <span class="time-stamp">02:30 PM – 03:45 PM</span>
+                                <h4>Chocolate Museum</h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="time-node">
+                        <div class="time-card-layout">
+                            <div class="time-img-wrap">
+                                <img src="lunch ikea.jpg" alt="IKEA Damansara">
+                            </div>
+                            <div class="time-content">
+                                <span class="time-stamp">04:00 PM – 06:45 PM</span>
+                                <h4>IKEA Damansara (Lunch 4:00–4:45 PM, Explore 4:45–6:45 PM &amp; Asar Prayer)</h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="time-node">
+                        <div class="time-card-layout">
+                            <div class="time-img-wrap">
+                                <img src="masjid damansara.jpg" alt="Masjid Damansara Perdana">
+                            </div>
+                            <div class="time-content">
+                                <span class="time-stamp">07:00 PM – 07:30 PM</span>
+                                <h4>Masjid Damansara Perdana (Maghrib Prayer)</h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="time-node">
+                        <div class="time-card-layout">
+                            <div class="time-img-wrap">
+                                <img src="download.jpg" alt="Roadside Tomyam Dinner">
+                            </div>
+                            <div class="time-content">
+                                <span class="time-stamp">07:30 PM – 08:30 PM</span>
+                                <h4>Roadside Tomyam Dinner on the Way Back</h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="time-node">
+                        <div class="time-card-layout">
+                            <div class="time-img-wrap">
+                                <img src="WhatsApp Image 2026-11-26 at 12.06.03 AM.jpeg" alt="Head Home">
+                            </div>
+                            <div class="time-content">
+                                <span class="time-stamp">08:30 PM Onwards</span>
+                                <h4>Head Home</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. STATIC RATIO PHOTO SLOTS FOR MEMORY -->
+        <section class="reveal">
+            <div class="sec-header">
+                <span class="sec-num">05</span>
+                <h2 class="sec-title">Official date before this</h2>
+            </div>
+
+            <div class="gallery-grid">
+                <div class="photo-frame">
+                    <img src="WhatsApp Image 2026-11-23 at 9.00.15 PM.jpeg" alt="Memory 1">
+                </div>
+
+                <div class="photo-frame">
+                    <img src="WhatsApp Image 2026-11-23 at 9.04.45 PM.jpeg" alt="Memory 2">
+                </div>
+
+                <div class="photo-frame">
+                    <img src="WhatsApp Image 2026-11-25 at 11.58.17 PM.jpeg" alt="Memory 3">
+                </div>
+            </div>
+        </section>
+
+        <footer>Counting down the hours until I see you.</footer>
+    </main>
+
+    <script>
+        // Scroll Reveal
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) entry.target.classList.add('is-visible');
+            });
+        }, { threshold: 0.12 });
+
+        document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+
+        // Background Image Crossfade Transition when reaching "Tentative"
+        const tentativeSection = document.getElementById('tentativeSection');
+        function updateBackgroundOnScroll() {
+            const triggerPoint = tentativeSection.getBoundingClientRect().top;
+            if (triggerPoint <= window.innerHeight * 0.65) {
+                document.body.classList.add('bg-shifted');
+            } else {
+                document.body.classList.remove('bg-shifted');
+            }
+        }
+        window.addEventListener('scroll', updateBackgroundOnScroll, { passive: true });
+        updateBackgroundOnScroll();
+
+        // Music Controls
+        const bgMusic = document.getElementById('bgMusic');
+        const musicToggle = document.getElementById('musicToggle');
+        const musicStatus = document.getElementById('musicStatus');
+        const volumeSlider = document.getElementById('volumeSlider');
+        const volumeIcon = document.getElementById('volumeIcon');
+
+        bgMusic.volume = volumeSlider.value / 100;
+
+        volumeSlider.addEventListener('input', (e) => {
+            const val = Number(e.target.value);
+            bgMusic.volume = val / 100;
+            volumeIcon.textContent = val === 0 ? '🔇' : (val < 55 ? '🔉' : '🔊');
+        });
+
+        musicToggle.addEventListener('click', async () => {
+            if (bgMusic.paused) {
+                try {
+                    await bgMusic.play();
+                    musicToggle.textContent = '❚❚';
+                    musicStatus.textContent = 'Playing';
+                } catch {
+                    musicStatus.textContent = 'Audio unavailable';
+                }
+            } else {
+                bgMusic.pause();
+                musicToggle.textContent = '▶';
+                musicStatus.textContent = 'Paused';
+            }
+        });
+
+        // Sparkles on Yes
+        const symbols = ['🤍', '✨', '🌿'];
+        function spawnSparkle() {
+            const sparkle = document.createElement('span');
+            sparkle.className = 'sparkle';
+            sparkle.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+            sparkle.style.left = `${Math.random() * 94 + 3}%`;
+            document.body.appendChild(sparkle);
+            sparkle.addEventListener('animationend', () => sparkle.remove());
+        }
+
+        // Yes / No Button Interactions
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const rsvpBanner = document.getElementById('rsvpBanner');
+        let sparkleInterval = null;
+
+        function moveNoButton() {
+            const maxX = Math.max(20, window.innerWidth - noBtn.offsetWidth - 20);
+            const maxY = Math.max(20, window.innerHeight - noBtn.offsetHeight - 20);
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = `${Math.random() * maxX}px`;
+            noBtn.style.top = `${Math.random() * maxY}px`;
+            noBtn.style.backgroundColor = '#FFFFFF';
+            noBtn.style.zIndex = '60';
+        }
+
+        noBtn.addEventListener('mouseenter', moveNoButton);
+        noBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            moveNoButton();
+        }, { passive: false });
+
+        yesBtn.addEventListener('click', async () => {
+            rsvpBanner.style.display = 'block';
+            noBtn.style.display = 'none';
+
+            if (!sparkleInterval) {
+                sparkleInterval = setInterval(spawnSparkle, 340);
+            }
+
+            if (bgMusic.paused) {
+                try {
+                    await bgMusic.play();
+                    musicToggle.textContent = '❚❚';
+                    musicStatus.textContent = 'Playing';
+                } catch {
+                    musicStatus.textContent = 'Audio unavailable';
+                }
+            }
+        });
+    </script>
+</body>
+</html>
